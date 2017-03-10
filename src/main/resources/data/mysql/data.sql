@@ -13,9 +13,11 @@ INSERT INTO Account (referenceId, username, password, enabled, credentialsexpire
 INSERT INTO Role (id, code, label, ordinal) VALUES (1, 'ROLE_USER', 'User', 0);
 INSERT INTO Role (id, code, label, ordinal) VALUES (2, 'ROLE_ADMIN', 'Admin', 1);
 INSERT INTO Role (id, code, label, ordinal) VALUES (3, 'ROLE_SYSADMIN', 'System Admin', 2);
+INSERT INTO Role (id, code, label, ordinal) VALUES (4, 'ROLE_INSPECTOR', 'Inspector', 3);
+
 
 INSERT INTO account_role (account_id, role_id) SELECT a.id, r.id FROM Account a, Role r WHERE a.username = 'user' and r.id = 1;
-INSERT INTO account_role (account_id, role_id) SELECT a.id, r.id FROM Account a, Role r WHERE a.username = 'operations' and r.id = 3;
+INSERT INTO account_role (account_id, role_id) SELECT a.id, r.id FROM Account a, Role r WHERE a.username = 'operations' and r.id = 4;
 INSERT INTO account_role (account_id, role_id) SELECT a.id, r.id FROM Account a, Role r WHERE a.username = 'up2011765544' and r.id = 1;
 INSERT INTO account_role (account_id, role_id) SELECT a.id, r.id FROM Account a, Role r WHERE a.username = 'up2011765533' and r.id = 1;
 

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-    @RequestMapping("/users") /* Maps to all HTTP actions by default (GET,POST,..)*/
+    @RequestMapping("/inspector/test") /* Maps to all HTTP actions by default (GET,POST,..)*/
     public @ResponseBody
     String getUsers() {
         return "hello";

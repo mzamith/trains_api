@@ -33,9 +33,13 @@ public class UserService implements UserDetailsService {
 		
         logger.info("> findByUsername");
         Account account = accountRepository.findByUsername(username);
+        
+        if (account == null) throw new UsernameNotFoundException("Username was not found");
+
 
         logger.info("< findByUsername");
         return new User(account.getUsername(), account.getPassword(), account.getRoles());
 	}
+	
 
 }

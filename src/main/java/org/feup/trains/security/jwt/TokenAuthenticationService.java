@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.feup.trains.service.UserService;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 public class TokenAuthenticationService {
 
@@ -18,14 +21,14 @@ public class TokenAuthenticationService {
      private String tokenPrefix = "Bearer";
      private String headerString = "Authorization";
      
-     private final UserService userService;
+     private final UserDetailsService userService;
      
      public TokenAuthenticationService() {
     	 this.userService = new UserService();
      }
      
      
-     public TokenAuthenticationService(UserService userService) {
+     public TokenAuthenticationService(UserDetailsService userService) {
          this.userService = userService;
      }
      
@@ -56,5 +59,27 @@ public class TokenAuthenticationService {
              }
          }
          return null;
+     }
+     
+     public boolean isValidInspector(AccountCredentials credentials){
+    	 
+    	 User user = (User) userService.loadUserByUsername(credentials.getUsername());
+    	 
+    	 for (GrantedAuthority authority: user.getAuthorities()){
+    		 if (authority.getAuthority().equals("ROLE_INSPECTOR")) return true;
+    	 }
+    	 return false;
+    	 
+     }
+     
+     public boolean isValidInspector(Authentication credentials){
+    	 
+    	 User user = (User) userService.loadUserByUsername(credentials.getName());
+    	 
+    	 for (GrantedAuthority authority: user.getAuthorities()){
+    		 if (authority.getAuthority().equals("ROLE_INSPECTOR")) return true;
+    	 }
+    	 return false;
+    	 
      }
  }

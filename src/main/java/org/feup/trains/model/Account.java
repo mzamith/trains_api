@@ -152,5 +152,15 @@ public class Account {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+    
+    public boolean isInspector(){
+    	
+    	for (Role role: roles){
+    		if (role.getCode().equals("ROLE_INSPECTOR")){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
 
 }
