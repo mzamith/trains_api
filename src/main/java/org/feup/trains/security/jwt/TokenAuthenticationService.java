@@ -12,6 +12,7 @@ import org.feup.trains.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public class TokenAuthenticationService {
@@ -56,6 +57,25 @@ public class TokenAuthenticationService {
              if (username != null) // we managed to retrieve a user
              {
                  return new AuthenticatedUser(username);
+             }
+         }
+         return null;
+     }
+     
+     public UserDetails getAuthenticatedUser(HttpServletRequest request) {
+         String token = request.getHeader(headerString);
+         if (token != null) {
+             // parse the token.
+             String username = Jwts.parser()
+                 .setSigningKey(secret)
+                 .parseClaimsJws(token)
+                 .getBody()
+                 .getSubject();
+             
+             
+             if (username != null) // we managed to retrieve a user
+             {
+                 return userService.loadUserByUsername(username);
              }
          }
          return null;

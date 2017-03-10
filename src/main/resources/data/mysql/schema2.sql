@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS `trains`.`Account` ;
 
 CREATE TABLE IF NOT EXISTS `trains`.`Account` (
   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `referenceId` VARCHAR(255) NOT NULL,
+  `reference_id` VARCHAR(255) NOT NULL,
   `username` VARCHAR(100) NOT NULL,
   `password` VARCHAR(200) NOT NULL,
   `enabled` BIT(1) NOT NULL DEFAULT b'1',
@@ -34,8 +34,12 @@ CREATE TABLE IF NOT EXISTS `trains`.`Account` (
   `expired` BIT(1) NOT NULL DEFAULT b'0',
   `locked` BIT(1) NOT NULL DEFAULT b'0',
   `version` INT(10) UNSIGNED NOT NULL,
+  `created_by` VARCHAR(100) NOT NULL,
+  `created_at` DATETIME NOT NULL,
+  `updated_by` VARCHAR(100) NULL DEFAULT NULL,
+  `updated_at` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `UQ_Account_ReferenceId` (`referenceId` ASC),
+  UNIQUE INDEX `UQ_Account_ReferenceId` (`reference_id` ASC),
   UNIQUE INDEX `UQ_Account_Username` (`username` ASC))
 ENGINE = InnoDB
 AUTO_INCREMENT = 3
@@ -52,6 +56,9 @@ CREATE TABLE IF NOT EXISTS `trains`.`Role` (
   `code` VARCHAR(50) NOT NULL,
   `label` VARCHAR(100) NOT NULL,
   `ordinal` INT(10) UNSIGNED NOT NULL,
+  `effective_at` DATETIME NOT NULL,
+  `expires_at` DATETIME NULL DEFAULT NULL,
+  `created_at` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `UQ_Role_Code` (`code` ASC))
 ENGINE = InnoDB
@@ -61,7 +68,6 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `trains`.`account_role`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `trains`.`Accountrole` ;
 DROP TABLE IF EXISTS `trains`.`account_role` ;
 
 CREATE TABLE IF NOT EXISTS `trains`.`account_role` (

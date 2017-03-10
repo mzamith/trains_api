@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
  * @author Manuel Zamith
  */
 @Entity
-public class Account {
+public class Account extends TransactionalEntity {
 
     private static final long serialVersionUID = 1L;
     
@@ -65,21 +65,7 @@ public class Account {
     @Column(name = "locked")
     @NotNull
     private boolean locked = false;
-    
-    @Column(name = "version")
-    @NotNull
-    private int version;
-    
-    
-    public int getVersion() {
-		return version;
-	}
 
-	public void setVersion(int version) {
-		this.version = version;
-	}
-    
-    
 
     @ManyToMany(
             fetch = FetchType.EAGER)

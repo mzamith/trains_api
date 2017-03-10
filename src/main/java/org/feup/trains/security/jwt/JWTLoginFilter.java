@@ -29,13 +29,11 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
     private TokenAuthenticationService tokenAuthenticationService;
-    private String applicationEndpoint;
 
     public JWTLoginFilter(String url, AuthenticationManager authenticationManager, TokenAuthenticationService tokenAuthenticationService) {
          super(new AntPathRequestMatcher(url));
          setAuthenticationManager(authenticationManager);
          this.tokenAuthenticationService = tokenAuthenticationService;
-         this.applicationEndpoint = url;
     }
 
     @Override
@@ -43,11 +41,11 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     throws AuthenticationException, IOException, ServletException {
         AccountCredentials credentials = new ObjectMapper().readValue(httpServletRequest.getInputStream(), AccountCredentials.class);
         
-        if (applicationEndpoint.equals(WebSecurityConfig.LOGIN_ENTRY_POINT_INSPECTOR)){
+/*        if (applicationEndpoint.equals(WebSecurityConfig.LOGIN_ENTRY_POINT_INSPECTOR)){
         	if (!tokenAuthenticationService.isValidInspector(credentials)){
         		throw new BadCredentialsException("Wrong Authority");
         	}
-        }
+        }*/
         
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword());
         return getAuthenticationManager().authenticate(token);

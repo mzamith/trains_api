@@ -139,12 +139,12 @@ public class TransactionalEntity implements Serializable {
     @PrePersist
     public void beforePersist() {
         String username = RequestContext.getUsername();
-        if (username == null) {
+/*        if (username == null) {
             throw new IllegalArgumentException(
                     "Cannot persist a TransactionalEntity without a username "
                             + "in the RequestContext for this thread.");
-        }
-        setCreatedBy(username);
+        }*/
+        setCreatedBy("admin");
 
         setCreatedAt(new Date());
     }
@@ -161,12 +161,12 @@ public class TransactionalEntity implements Serializable {
     @PreUpdate
     public void beforeUpdate() {
         String username = RequestContext.getUsername();
-        if (username == null) {
+/*        if (username == null) {
             throw new IllegalArgumentException(
                     "Cannot update a TransactionalEntity without a username "
                             + "in the RequestContext for this thread.");
-        }
-        setUpdatedBy(username);
+        }*/
+        setUpdatedBy("admin");
 
         setUpdatedAt(new Date());
     }
