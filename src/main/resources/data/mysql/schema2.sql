@@ -87,7 +87,172 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
+-- -----------------------------------------------------
+-- Table `trains`.`station`
+-- -----------------------------------------------------
+drop table if exists `trains`.`station`;
 
+create table `trains`.`station` (
+    `id` bigint(20) unsigned not null auto_increment,
+	`code` varchar(50) not null,
+	`label` varchar(100) not null,
+	`ordinal` int(10) unsigned not null,
+	`effective_at` datetime not null,
+	`expires_at` datetime null default null,
+	`created_at` datetime not null,
+    primary key (`id`),
+    unique index `code_unique` (`code` asc));
+
+
+-- -----------------------------------------------------
+-- Table `trains`.`line`
+-- -----------------------------------------------------
+drop table if exists `trains`.`line`;
+
+create table `trains`.`line` (
+    `id` bigint(20) unsigned not null auto_increment,
+	`code` varchar(50) not null,
+	`label` varchar(100) not null,
+	`ordinal` int(10) unsigned not null,
+	`effective_at` datetime not null,
+	`expires_at` datetime null default null,
+	`created_at` datetime not null,
+    primary key (`id`),
+    unique index `code_unique` (`code` asc));
+
+
+-- -----------------------------------------------------
+-- Table `trains`.`train`
+-- -----------------------------------------------------
+drop table if exists `trains`.`train`;
+
+create table `trains`.`train` (
+	`id` bigint(20) unsigned not null auto_increment,
+	`code` varchar(50) not null,
+	`label` varchar(100) not null default 'comboio regular',
+	`ordinal` int(10) unsigned not null,
+	`effective_at` datetime not null,
+	`expires_at` datetime null default null,
+	`created_at` datetime not null,
+    `capacity` int unsigned not null,
+    primary key (`id`),
+    unique index `code_unique` (`code` asc));
+
+
+-- -----------------------------------------------------
+-- Table `trains`.`trip`
+-- -----------------------------------------------------
+drop table if exists `trains`.`trip`;
+
+create table `trains`.`trip` (
+	`id` bigint(20) unsigned not null auto_increment,
+	`code` varchar(50) not null,
+	`label` varchar(100) not null,
+	`ordinal` int(10) unsigned not null,
+	`effective_at` datetime not null,
+	`expires_at` datetime null default null,
+	`created_at` datetime not null,
+	`from` bigint(20) unsigned not null,
+	`to` bigint(20) unsigned not null,
+	`line` bigint(20) unsigned not null,
+	`duration` int unsigned not null,
+	`distance` int unsigned not null,
+	primary key (`id`),
+	unique index `unique_line_from_to` (`line` asc, `from` asc, `to` asc),
+	index `trip_from_fk_idx` (`from` asc),
+	index `trip_to_fk_idx` (`to` asc),
+	constraint `trip_line_fk`
+    foreign key (`line`)
+    references `trains`.`line` (`id`)
+    on delete restrict
+    on update cascade,
+	constraint `trip_from_fk`
+		foreign key (`from`)
+		references `trains`.`station` (`id`)
+		on delete restrict
+		on update cascade,
+	constraint `trip_to_fk`
+		foreign key (`to`)
+		references `trains`.`station` (`id`)
+		on delete restrict
+		on update cascade);
+
+
+-- -----------------------------------------------------
+-- Table `trains`.`departure`
+-- -----------------------------------------------------
+drop table if exists `trains`.`departure`;
+
+create table `trains`.`departure` (
+    `id` bigint(20) unsigned not null auto_increment,
+	`code` varchar(50) not null,
+	`label` varchar(100) not null,
+	`ordinal` int(10) unsigned not null,
+	`effective_at` datetime not null,
+	`expires_at` datetime null default null,
+	`created_at` datetime not null,
+    `from` bigint(20) unsigned not null,
+    `time` datetime not null,
+    `line` bigint(20) unsigned not null,
+    `train` bigint(20) unsigned not null,
+    primary key (`id`),
+    index `departure_from_fk_idx` (`from` asc),
+    index `departure_train_fk_idx` (`train` asc),
+    index `departure_line_fk_idx` (`line` asc),
+    constraint `departure_from_fk`
+        foreign key (`from`)
+        references `trains`.`station` (`id`)
+        on delete restrict
+        on update cascade,
+    constraint `departure_train_fk`
+        foreign key (`train`)
+        references `trains`.`train` (`id`)
+        on delete restrict
+        on update cascade,
+    constraint `departure_line_fk`
+        foreign key (`line`)
+        references `trains`.`line` (`id`)
+        on delete restrict
+        on update cascade,
+	unique index `code_unique` (`code` asc));
+
+
+-- -----------------------------------------------------
+-- Table `trains`.`ticket`
+-- -----------------------------------------------------
+drop table if exists `trains`.`ticket`;
+
+create table `trains`.`ticket` (
+	`id` bigint(20) unsigned not null auto_increment,
+	`code` varchar(50) not null,
+	`label` varchar(100) not null,
+	`ordinal` int(10) unsigned not null,
+	`effective_at` datetime not null,
+	`expires_at` datetime null default null,
+	`created_at` datetime not null,
+	`account_id` bigint(20) unsigned not null,
+	`departure` bigint(20) unsigned not null,
+	`to` bigint(20) unsigned not null,
+	`price` decimal(6,2) unsigned not null,
+	primary key (`id`),
+	index `ticket_departure_idx` (`departure` asc),
+	index `ticket_to_idx` (`to` asc),
+        constraint `ticket_user_fk`
+            foreign key (`account_id`)
+            references `trains`.`account` (`id`)
+            on delete restrict
+            on update cascade,
+	constraint `ticket_departure_fk`
+		foreign key (`departure`)
+		references `trains`.`departure` (`id`)
+		on delete restrict
+		on update cascade,
+	constraint `ticket_to_fk`
+		foreign key (`to`)
+		references `trains`.`station` (`id`)
+		on delete restrict
+		on update cascade,
+	unique index `code_unique` (`code` asc));
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
