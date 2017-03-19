@@ -39,13 +39,16 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
     throws AuthenticationException, IOException, ServletException {
-        AccountCredentials credentials = new ObjectMapper().readValue(httpServletRequest.getInputStream(), AccountCredentials.class);
         
-/*        if (applicationEndpoint.equals(WebSecurityConfig.LOGIN_ENTRY_POINT_INSPECTOR)){
+    	AccountCredentials credentials = new ObjectMapper().readValue(httpServletRequest.getInputStream(), AccountCredentials.class);
+    	
+    	String request = httpServletRequest.getRequestURL().toString();
+        
+        if (httpServletRequest.getRequestURL().toString().contains(WebSecurityConfig.LOGIN_ENTRY_POINT_INSPECTOR)){
         	if (!tokenAuthenticationService.isValidInspector(credentials)){
         		throw new BadCredentialsException("Wrong Authority");
         	}
-        }*/
+        }
         
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword());
         return getAuthenticationManager().authenticate(token);
@@ -66,6 +69,8 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
         
         if (failed instanceof BadCredentialsException) {
         	response.sendError(401, "Invalid username or password");
+        }else if (failed instanceof UsernameNotFoundException){
+        	response.sendError(401, "Username not Found");
         }else {
         	response.sendError(500, "Internal Server Error");
         }

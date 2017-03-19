@@ -15,6 +15,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 
+import org.feup.trains.model.TransactionalEntity;
+
 /**
  * The Account class is an entity model object. An Account describes the
  * security credentials and authentication flags that permit access to
@@ -65,6 +67,12 @@ public class Account extends TransactionalEntity {
     @Column(name = "locked")
     @NotNull
     private boolean locked = false;
+    
+    @Column(name = "card_number")
+    private String cardNumber;
+    
+    @Column(name = "card_date")
+    private Date cardDate;
 
 
     @ManyToMany(
@@ -138,8 +146,25 @@ public class Account extends TransactionalEntity {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+   
     
-    public boolean isInspector(){
+    public String getCardNumber() {
+		return cardNumber;
+	}
+
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
+	}
+
+	public Date getCardDate() {
+		return cardDate;
+	}
+
+	public void setCardDate(Date cardDate) {
+		this.cardDate = cardDate;
+	}
+
+	public boolean isInspector(){
     	
     	for (Role role: roles){
     		if (role.getCode().equals("ROLE_INSPECTOR")){

@@ -22,9 +22,9 @@ USE `trains` ;
 -- -----------------------------------------------------
 -- Table `trains`.`Account`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `trains`.`Account` ;
+DROP TABLE IF EXISTS `trains`.`account` ;
 
-CREATE TABLE IF NOT EXISTS `trains`.`Account` (
+CREATE TABLE IF NOT EXISTS `trains`.`account` (
   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `reference_id` VARCHAR(255) NOT NULL,
   `username` VARCHAR(100) NOT NULL,
@@ -33,6 +33,8 @@ CREATE TABLE IF NOT EXISTS `trains`.`Account` (
   `credentialsexpired` BIT(1) NOT NULL DEFAULT b'0',
   `expired` BIT(1) NOT NULL DEFAULT b'0',
   `locked` BIT(1) NOT NULL DEFAULT b'0',
+  `card_number` VARCHAR(100) NULL DEFAULT NULL,
+  `card_date` DATETIME NULL DEFAULT NULL,
   `version` INT(10) UNSIGNED NOT NULL,
   `created_by` VARCHAR(100) NOT NULL,
   `created_at` DATETIME NOT NULL,
@@ -49,9 +51,9 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `trains`.`Role`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `trains`.`Role` ;
+DROP TABLE IF EXISTS `trains`.`role` ;
 
-CREATE TABLE IF NOT EXISTS `trains`.`Role` (
+CREATE TABLE IF NOT EXISTS `trains`.`role` (
   `id` BIGINT(20) UNSIGNED NOT NULL,
   `code` VARCHAR(50) NOT NULL,
   `label` VARCHAR(100) NOT NULL,
@@ -77,11 +79,11 @@ CREATE TABLE IF NOT EXISTS `trains`.`account_role` (
   INDEX `FK_account_role_role_id` (`role_id` ASC),
   CONSTRAINT `FK_account_role_Account_Id`
     FOREIGN KEY (`account_id`)
-    REFERENCES `trains`.`Account` (`id`)
+    REFERENCES `trains`.`account` (`id`)
     ON DELETE CASCADE,
   CONSTRAINT `FK_account_role_Role_Id`
     FOREIGN KEY (`role_id`)
-    REFERENCES `trains`.`Role` (`id`)
+    REFERENCES `trains`.`role` (`id`)
     ON DELETE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
