@@ -20,6 +20,18 @@ CREATE SCHEMA IF NOT EXISTS `trains` DEFAULT CHARACTER SET utf8 ;
 USE `trains` ;
 
 -- -----------------------------------------------------
+-- Table `trains`.`configuration`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `trains`.`configuration` ;
+
+CREATE TABLE IF NOT EXISTS `trains`.`configuration` (
+  `id` 	BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `conf_key` VARCHAR(100) NOT NULL,
+  `conf_value` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `key_UNIQUE` (`conf_key` ASC));
+
+-- -----------------------------------------------------
 -- Table `trains`.`Account`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `trains`.`account` ;

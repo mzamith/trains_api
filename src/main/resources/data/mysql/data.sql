@@ -3,6 +3,9 @@
  * Load the database with reference data and unit test data.
  */
 
+
+INSERT INTO configuration (id, conf_key, conf_value) VALUES (1, "trains-cents-per-kilometre", "1");
+
 -- password is 'admin'
 INSERT INTO account (reference_id, username, password, enabled, credentialsexpired, expired, locked, card_number, card_date, version, created_by, created_at, updated_by, updated_at) VALUES ('a07bd221-3ecd-4893-a0f0-78d7c0fbf94e', 'user', '$2a$10$LaCUwxyZEFiyrEwwwOtaPe.FUv8zAHxCDsWAz1yBcMkQ6zPOP2YzK', true, false, false, false, NULL, NOW(), 0, 'user', NOW(), NULL, NULL);
 -- password is 'operations'

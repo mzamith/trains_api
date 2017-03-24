@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class Station extends ReferenceEntity {
 
     public Station() {
-	super();
+    	super();
     }
 
 }

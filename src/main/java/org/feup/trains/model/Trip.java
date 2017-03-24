@@ -7,6 +7,8 @@ package org.feup.trains.model;
 
 import java.time.LocalTime;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -24,19 +26,28 @@ public class Trip extends ReferenceEntity {
     /**
      * The Line in which this trip is part of.
      */
-    @ManyToOne
+	@ManyToOne(
+			fetch = FetchType.EAGER,
+			optional = false)
+	@JoinColumn(name = "line")
     private Line line;
 
     /**
      * Station where the train comes from.
      */
-    @ManyToOne
+	@ManyToOne(
+			fetch = FetchType.EAGER,
+			optional = false)
+	@JoinColumn(name = "from")
     private Station from;
 
     /**
      * Station where the train goes to.
      */
-    @ManyToOne
+	@ManyToOne(
+			fetch = FetchType.EAGER,
+			optional = false)
+	@JoinColumn(name = "to")
     private Station to;
 
     /**

@@ -19,7 +19,7 @@ import javax.persistence.Table;
 public class Line extends ReferenceEntity {
 
     public Line() {
-	super();
+    	super();
     }
 
 }
