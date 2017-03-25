@@ -75,9 +75,9 @@ public class TripServiceBean implements TripService {
 			List<SimpleTripDTO> simpleTrips = new ArrayList<SimpleTripDTO>();
 			
 			for (Trip trip :  trips){
+				simpleTrips.add(new SimpleTripDTO(new Date(departure.getTime().getTime() + totalDuration * 1000), trip.getFrom()));
 				totalDuration += trip.getDuration();
 				totalDistance += trip.getDistance();
-				simpleTrips.add(new SimpleTripDTO(new Date(departure.getTime().getTime() + totalDuration), trip.getFrom()));
 			}
 			
 			travel.setTotalDistance(totalDistance);
@@ -86,7 +86,7 @@ public class TripServiceBean implements TripService {
 			
 			//include configuration here
 			travel.setPrice(Math.round(totalDistance * configurationService.getPriceConfiguration() * 0.001));
-			travel.setEndTime(new Date(departure.getTime().getTime() + totalDuration));
+			travel.setEndTime(new Date(departure.getTime().getTime() + totalDuration * 1000));
 			travel.setFrom(trips.get(0).getFrom());
 			travel.setTo(trips.get(trips.size() - 1).getTo());
 			
