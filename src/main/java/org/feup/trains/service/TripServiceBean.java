@@ -80,15 +80,18 @@ public class TripServiceBean implements TripService {
 				totalDistance += trip.getDistance();
 			}
 			
+			
 			travel.setTotalDistance(totalDistance);
 			travel.setTotalDuration(totalDuration);
-			travel.setTrips(simpleTrips);
 			
-			//include configuration here
+			
 			travel.setPrice(Math.round(totalDistance * configurationService.getPriceConfiguration() * 0.001));
 			travel.setEndTime(new Date(departure.getTime().getTime() + totalDuration * 1000));
 			travel.setFrom(trips.get(0).getFrom());
 			travel.setTo(trips.get(trips.size() - 1).getTo());
+			
+			simpleTrips.add(new SimpleTripDTO(travel.getEndTime(), travel.getTo()));
+			travel.setTrips(simpleTrips);
 			
 			travels.add(travel);
 			
