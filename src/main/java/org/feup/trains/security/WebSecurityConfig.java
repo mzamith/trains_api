@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public WebSecurityConfig() {
 		
 		super(true);
-		this.userService = new UserService();
+		this.userService = UserService.getInstance();
 		tokenAuthenticationService = new TokenAuthenticationService(userService);
 	
 	}

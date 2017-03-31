@@ -25,9 +25,8 @@ public class TokenAuthenticationService {
      private final UserDetailsService userService;
      
      public TokenAuthenticationService() {
-    	 this.userService = new UserService();
+    	 this.userService = UserService.getInstance();
      }
-     
      
      public TokenAuthenticationService(UserDetailsService userService) {
          this.userService = userService;

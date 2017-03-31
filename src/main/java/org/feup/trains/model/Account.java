@@ -1,6 +1,7 @@
 
 package org.feup.trains.model;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 
@@ -16,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 
 import org.feup.trains.model.TransactionalEntity;
+import org.feup.trains.util.Luhn;
 
 /**
  * The Account class is an entity model object. An Account describes the
@@ -162,6 +164,13 @@ public class Account extends TransactionalEntity {
 
 	public void setCardDate(Date cardDate) {
 		this.cardDate = cardDate;
+	}
+	
+	public boolean hasValidCard(){
+		
+		if (this.cardDate == null || this.cardNumber == null) return false;
+		
+		return (Luhn.check(this.cardNumber) && this.cardDate.after(new Date()));
 	}
 
 	public boolean isInspector(){

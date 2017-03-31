@@ -37,8 +37,17 @@ public class Ticket extends ReferenceEntity {
     @ManyToOne(
 	    fetch = FetchType.EAGER,
 	    optional = false)
-    @JoinColumn(name = "to")
+    @JoinColumn(name = "to_station")
     private Station to;
+    
+    /**
+     * The account the ticket belongs to
+     */
+	@ManyToOne(
+			fetch = FetchType.EAGER,
+			optional = false)
+	@JoinColumn(name = "account_id")
+    private Account account;
 
     /**
      * Price to pay for ticket.
@@ -72,5 +81,13 @@ public class Ticket extends ReferenceEntity {
     public void setPrice(BigDecimal price) {
 	this.price = price;
     }
+    
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
 
 }

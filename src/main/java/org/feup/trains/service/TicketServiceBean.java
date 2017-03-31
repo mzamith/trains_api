@@ -6,11 +6,20 @@
 package org.feup.trains.service;
 
 import java.util.Collection;
+
+import javax.persistence.EntityExistsException;
+import javax.servlet.http.HttpServletRequest;
+
+import org.feup.trains.exception.InvalidCardException;
+import org.feup.trains.model.Account;
 import org.feup.trains.model.Ticket;
+import org.feup.trains.repository.AccountRepository;
 import org.feup.trains.repository.TicketRepository;
+import org.feup.trains.security.jwt.TokenAuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,31 +28,61 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Renato Ayres
  */
 @org.springframework.stereotype.Service
-@Transactional(
-	propagation = Propagation.SUPPORTS,
-	readOnly = true)
+@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class TicketServiceBean implements TicketService {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    /**
-     * The Spring Data repository for Ticket entities.
-     */
-    @Autowired
-    private TicketRepository ticketRepository;
+	/**
+	 * The Spring Data repository for Ticket entities.
+	 */
+	@Autowired
+	private TicketRepository ticketRepository;
 
-    @Override
-    public Collection<Ticket> findAll() {
-	logger.info("> findAll");
+	@Autowired
+	AccountRepository accountRepository;
 
-	return ticketRepository.findAll();
-    }
+	@Override
+	public Collection<Ticket> findAll() {
+		logger.info("> findAll");
 
-    @Override
-    public Collection<Ticket> findAllByDeparture(Long departure) {
-	logger.info("> findAllByDeparture");
+		return ticketRepository.findAll();
+	}
 
-	return ticketRepository.findAllByDeparture(departure);
-    }
+	@Override
+	public Collection<Ticket> findAllByDeparture(Long departure) {
+		logger.info("> findAllByDeparture");
+
+		return ticketRepository.findAllByDeparture(departure);
+	}
+
+	@Override
+	public Ticket buyTicket(Ticket ticket, HttpServletRequest request) throws InvalidCardException {
+
+		// Ensure the entity object to be created does NOT exist in the
+		// repository. Prevent the default behavior of save() which will update
+		// an existing entity if the entity matching the supplied id exists.
+		if (ticket.getId() != null) {
+			// Cannot create Ticket with specified ID value
+			logger.error("Attempted to create a Exam, but id attribute was not null.");
+			throw new EntityExistsException("The id attribute must be null to persist a new entity.");
+		}
+
+		TokenAuthenticationService service = new TokenAuthenticationService();
+		UserDetails user = service.getAuthenticatedUser(request);
+
+		Account account = accountRepository.findByUsername(user.getUsername());
+
+		if (!account.hasValidCard())
+			throw new InvalidCardException("Card is expired or invalid");
+
+		logger.info("card is Valid. Saving ticket");
+		ticket.setAccount(account);
+
+		Ticket savedTicket = ticketRepository.save(ticket);
+
+		return savedTicket;
+
+	}
 
 }

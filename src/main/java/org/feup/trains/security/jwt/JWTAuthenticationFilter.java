@@ -20,6 +20,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.filter.GenericFilterBean;
 
+import io.jsonwebtoken.ExpiredJwtException;
+
 public class JWTAuthenticationFilter extends GenericFilterBean {
 
 	private final TokenAuthenticationService authenticationService;
@@ -37,21 +39,21 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
 			throws IOException, ServletException {
 
 		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse res = (HttpServletResponse) response;
 		String url = req.getRequestURL().toString();
 
-		//if (!url.contains(WebSecurityConfig.ENTRY_POINT_REGISTRATION)) {
+		// if (!url.contains(WebSecurityConfig.ENTRY_POINT_REGISTRATION)) {
 
+		try {
 			Authentication authentication = authenticationService.getAuthentication((HttpServletRequest) request);
+
 			User user = (User) authenticationService.getAuthenticatedUser((HttpServletRequest) request);
-			
-			
 
 			if (user != null) {
-				UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+				UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(),
+						user.getPassword());
 				this.authenticationProvider.additionalAuthenticationChecks(user, token);
 			}
-
-			HttpServletResponse res = (HttpServletResponse) response;
 
 			if (authentication != null && url.contains("/inspector")) {
 				if (!authenticationService.isValidInspector(authentication)) {
@@ -61,7 +63,11 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
 
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			filterChain.doFilter(request, response);
-
+			
+			//Added condition to verify if token has already expired;
+		} catch (ExpiredJwtException eje) {
+			res.sendError(401, eje.getLocalizedMessage());
 		}
-	//}
+	}
+	// }
 }

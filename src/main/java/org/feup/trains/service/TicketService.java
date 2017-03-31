@@ -6,6 +6,10 @@
 package org.feup.trains.service;
 
 import java.util.Collection;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.feup.trains.exception.InvalidCardException;
 import org.feup.trains.model.Ticket;
 
 /**
@@ -17,5 +21,8 @@ public interface TicketService {
     public Collection<Ticket> findAll();
 
     public Collection<Ticket> findAllByDeparture(Long departure);
+    
+	Ticket buyTicket(Ticket ticket, HttpServletRequest request) throws InvalidCardException;
+
 
 }

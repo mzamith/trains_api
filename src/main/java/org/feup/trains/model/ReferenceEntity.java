@@ -4,6 +4,7 @@ package org.feup.trains.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
@@ -29,6 +30,7 @@ public class ReferenceEntity implements Serializable  {
      * The primary key identifier.
      */
     @Id
+    @GeneratedValue
     private Long id;
 
     /**

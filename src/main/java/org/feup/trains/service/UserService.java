@@ -29,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService implements UserDetailsService {
 	
+    private static UserService instance = null;
+	
     /**
      * The Logger for this class.
      */
@@ -42,6 +44,16 @@ public class UserService implements UserDetailsService {
     
     @Autowired
     private RoleRepository roleRepository;
+    
+    protected UserService() {
+       // Exists only to defeat instantiation.
+    }
+    public static UserService getInstance() {
+       if(instance == null) {
+          instance = new UserService();
+       }
+       return instance;
+    }
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
