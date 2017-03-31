@@ -24,17 +24,17 @@ import javax.persistence.Table;
 public class Departure extends ReferenceEntity {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
+    /**
      * Station of departure.
      */
-	@ManyToOne(
-			fetch = FetchType.EAGER,
-			optional = false)
-	@JoinColumn(name = "from")
+    @ManyToOne(
+	    fetch = FetchType.EAGER,
+	    optional = false)
+    @JoinColumn(name = "from")
     private Station from;
 
     /**
@@ -45,16 +45,16 @@ public class Departure extends ReferenceEntity {
     /**
      * Line the train will comply to.
      */
-	@ManyToOne(
-			fetch = FetchType.EAGER,
-			optional = false)
-	@JoinColumn(name = "line")
+    @ManyToOne(
+	    fetch = FetchType.EAGER,
+	    optional = false)
+    @JoinColumn(name = "line")
     private Line line;
 
-	@ManyToOne(
-			fetch = FetchType.EAGER,
-			optional = false)
-	@JoinColumn(name = "train")
+    @ManyToOne(
+	    fetch = FetchType.EAGER,
+	    optional = false)
+    @JoinColumn(name = "train")
     private Train train;
 
     public Departure() {
@@ -70,15 +70,15 @@ public class Departure extends ReferenceEntity {
     }
 
     public Date getTime() {
-    	return time;
+	return time;
     }
 
     public void setTime(Date time) {
-    	this.time = time;
+	this.time = time;
     }
 
     public Line getLine() {
-    	return line;
+	return line;
     }
 
     public void setLine(Line line) {

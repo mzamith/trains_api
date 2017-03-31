@@ -5,8 +5,11 @@
  */
 package org.feup.trains.repository;
 
+import java.util.List;
 import org.feup.trains.model.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -19,5 +22,19 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
+
+    /**
+     * Query for a Ticket list entity by Departure. This method illustrates the
+     * Query Method approach for query definition.
+     *
+     * <pre>
+     * SELECT a FROM Ticket t WHERE a.from = ?
+     * </pre>
+     *
+     * @param departure A Long id of the Departure.
+     * @return Collection of Ticket or <code>null</code> if none found.
+     */
+    @Query("SELECT t FROM Ticket t WHERE t.departure.id = :departure")
+    List<Ticket> findAllByDeparture(@Param("departure") Long departure);
 
 }

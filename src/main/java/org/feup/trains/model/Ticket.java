@@ -7,6 +7,8 @@ package org.feup.trains.model;
 
 import java.math.BigDecimal;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -23,13 +25,19 @@ public class Ticket extends ReferenceEntity {
     /**
      * The departure this ticket is supposed to be used at.
      */
-    @ManyToOne
+    @ManyToOne(
+	    fetch = FetchType.EAGER,
+	    optional = false)
+    @JoinColumn(name = "departure")
     private Departure departure;
 
     /**
      * The station this ticket is allowed to go.
      */
-    @ManyToOne
+    @ManyToOne(
+	    fetch = FetchType.EAGER,
+	    optional = false)
+    @JoinColumn(name = "to")
     private Station to;
 
     /**
