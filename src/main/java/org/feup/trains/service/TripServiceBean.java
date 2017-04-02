@@ -4,9 +4,9 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.feup.trains.dto.SimpleTripDTO;
+import org.feup.trains.dto.TravelDTO;
 import org.feup.trains.model.Departure;
-import org.feup.trains.model.SimpleTripDTO;
-import org.feup.trains.model.TravelDTO;
 import org.feup.trains.model.Trip;
 import org.feup.trains.repository.DepartureRepository;
 import org.feup.trains.repository.TripRepository;
@@ -66,6 +66,7 @@ public class TripServiceBean implements TripService {
 			
 			TravelDTO travel = new TravelDTO();
 						
+			travel.setDeparture(departure);
 			travel.setStartTime(departure.getTime());			
 			travel.setLine(departure.getLine());
 			travel.setTrain(departure.getTrain());

@@ -1,12 +1,19 @@
-package org.feup.trains.model;
+package org.feup.trains.dto;
 
 import java.util.Date;
 import java.util.List;
+
+import org.feup.trains.model.Departure;
+import org.feup.trains.model.Line;
+import org.feup.trains.model.Station;
+import org.feup.trains.model.Train;
 
 public class TravelDTO {
 	
 	private Station from;
 	private Station to;
+	
+	private Departure departure;
 	
 	private Line line;
 	
@@ -37,6 +44,17 @@ public class TravelDTO {
 	public void setTo(Station to) {
 		this.to = to;
 	}
+	
+	public Departure getDeparture() {
+		return departure;
+	}
+
+
+	public void setDeparture(Departure departure) {
+		this.departure = departure;
+	}
+
+
 	public Line getLine() {
 		return line;
 	}

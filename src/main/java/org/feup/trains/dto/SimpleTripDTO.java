@@ -1,6 +1,8 @@
-package org.feup.trains.model;
+package org.feup.trains.dto;
 
 import java.util.Date;
+
+import org.feup.trains.model.Station;
 
 public class SimpleTripDTO {
 	

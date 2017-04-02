@@ -3,8 +3,8 @@ package org.feup.trains.web.api;
 import java.util.Collection;
 import java.util.List;
 
+import org.feup.trains.dto.TravelDTO;
 import org.feup.trains.model.Station;
-import org.feup.trains.model.TravelDTO;
 import org.feup.trains.service.TripService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

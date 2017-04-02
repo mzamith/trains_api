@@ -6,6 +6,7 @@
 package org.feup.trains.service;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.persistence.EntityExistsException;
 import javax.servlet.http.HttpServletRequest;
@@ -78,6 +79,11 @@ public class TicketServiceBean implements TicketService {
 
 		logger.info("card is Valid. Saving ticket");
 		ticket.setAccount(account);
+		ticket.setOrdinal(1);
+		ticket.setLabel("dummy");
+		ticket.setCode("dummy");
+		ticket.setCreatedAt(new Date());
+		ticket.setEffectiveAt(new Date());
 
 		Ticket savedTicket = ticketRepository.save(ticket);
 

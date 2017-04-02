@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityExistsException;
+import javax.servlet.http.HttpServletRequest;
 
-
+import org.feup.trains.dto.AccountDTO;
 import org.feup.trains.model.Account;
 import org.feup.trains.model.Role;
 import org.feup.trains.repository.AccountRepository;
 import org.feup.trains.repository.RoleRepository;
+import org.feup.trains.security.jwt.TokenAuthenticationService;
 import org.feup.trains.util.BCryptPasswordEncoderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import junit.framework.Assert;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -95,6 +99,34 @@ public class UserService implements UserDetailsService {
 
         logger.info("< createAccount");
         return savedAccount;
+    }
+    
+    public AccountDTO getProfile(HttpServletRequest request){
+    	
+    	TokenAuthenticationService service = new TokenAuthenticationService();
+		UserDetails user = service.getAuthenticatedUser(request);
+		
+		Account account = accountRepository.findByUsername(user.getUsername());
+		
+		return new AccountDTO(account);
+    }
+    
+	public AccountDTO updateProfile(AccountDTO account, HttpServletRequest request){
+    	
+    	TokenAuthenticationService service = new TokenAuthenticationService();
+		UserDetails user = service.getAuthenticatedUser(request);
+		
+		Account fullAccount = accountRepository.findByUsername(user.getUsername());
+		
+		//assert that the request comes from the right user
+		assert account.getUsername().equals(fullAccount.getUsername());
+		
+		fullAccount.setCardDate(account.getCardDate());
+		fullAccount.setCardNumber(account.getCardNumber());
+		
+		Account updatedFullAccount = accountRepository.save(fullAccount);
+		
+		return new AccountDTO(updatedFullAccount);
     }
 	
     private Account setUpAccount(Account account){

@@ -2,7 +2,7 @@ package org.feup.trains.service;
 
 import java.util.List;
 
-import org.feup.trains.model.TravelDTO;
+import org.feup.trains.dto.TravelDTO;
 
 public interface TripService {
 	

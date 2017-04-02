@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.GenericFilterBean;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -67,6 +68,8 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
 			//Added condition to verify if token has already expired;
 		} catch (ExpiredJwtException eje) {
 			res.sendError(401, eje.getLocalizedMessage());
+		} catch (UsernameNotFoundException unfe){
+			res.sendError(401, unfe.getLocalizedMessage());
 		}
 	}
 	// }
