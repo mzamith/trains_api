@@ -22,6 +22,8 @@ public interface TicketService {
 
     public Collection<Ticket> findAllByDeparture(Long departure);
     
+    Collection<Ticket> findByAccount(HttpServletRequest request);
+    
 	Ticket buyTicket(Ticket ticket, HttpServletRequest request) throws InvalidCardException;
 
 

@@ -74,4 +74,24 @@ public class TicketController {
 		}
 
 	}
+	
+    /**
+     * Web service endpoint to fetch all Ticket entities for a given user. The service returns
+     * the collection of Ticket entities as JSON.
+     * 
+     * @return A ResponseEntity containing a Collection of Ticket objects.
+     */
+    @RequestMapping(
+            value = "/api/usertickets",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<Ticket>> getUserTickets(HttpServletRequest request) {
+        logger.info("> getTickets");
+
+        Collection<Ticket> tickets = ticketService.findByAccount(request);
+
+        logger.info("< getTickets");
+        return new ResponseEntity<Collection<Ticket>>(tickets,
+                HttpStatus.OK);
+    }
 }

@@ -121,8 +121,8 @@ public class UserService implements UserDetailsService {
 		//assert that the request comes from the right user
 		assert account.getUsername().equals(fullAccount.getUsername());
 		
-		fullAccount.setCardDate(account.getCardDate());
-		fullAccount.setCardNumber(account.getCardNumber());
+		fullAccount.setCardDate(account.getCardDate());		
+		fullAccount.setCardNumber( (account.getCardNumber() != null && account.getCardNumber().isEmpty()) ? null : account.getCardNumber());
 		
 		Account updatedFullAccount = accountRepository.save(fullAccount);
 		
@@ -140,6 +140,8 @@ public class UserService implements UserDetailsService {
         roles.add(roleRepository.findByCodeAndEffective("ROLE_USER", new Date()));
         
         account.setRoles(roles);
+        
+        if (account.getCardNumber() != null && account.getCardNumber().isEmpty()) account.setCardNumber(null);
         
         return account;
     }

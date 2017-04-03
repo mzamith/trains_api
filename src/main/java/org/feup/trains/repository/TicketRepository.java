@@ -36,5 +36,19 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
      */
     @Query("SELECT t FROM Ticket t WHERE t.departure.id = :departure")
     List<Ticket> findAllByDeparture(@Param("departure") Long departure);
+    
+    /**
+     * Query for a Ticket list entity by Account. This method illustrates the
+     * Query Method approach for query definition.
+     *
+     * <pre>
+     * SELECT a FROM Ticket t WHERE a.from = ?
+     * </pre>
+     *
+     * @param departure A String of the Account username.
+     * @return Collection of Ticket or <code>null</code> if none found.
+     */
+    @Query("SELECT t FROM Ticket t WHERE t.account.username = :username")
+    List<Ticket> findAllByUsername(@Param("username") String username);
 
 }

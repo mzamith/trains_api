@@ -90,5 +90,15 @@ public class TicketServiceBean implements TicketService {
 		return savedTicket;
 
 	}
+	
+	@Override
+	public Collection<Ticket> findByAccount(HttpServletRequest request){
+		
+		TokenAuthenticationService service = new TokenAuthenticationService();
+		UserDetails user = service.getAuthenticatedUser(request);
+		
+		return ticketRepository.findAllByUsername(user.getUsername());
+		
+	}
 
 }
