@@ -14,9 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.feup.trains.exception.InvalidCardException;
 import org.feup.trains.model.Account;
 import org.feup.trains.model.Ticket;
+import org.feup.trains.model.TicketState;
 import org.feup.trains.repository.AccountRepository;
 import org.feup.trains.repository.TicketRepository;
 import org.feup.trains.security.jwt.TokenAuthenticationService;
+import org.feup.trains.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,9 @@ public class TicketServiceBean implements TicketService {
 
 	@Autowired
 	AccountRepository accountRepository;
+	
+	@Autowired
+	ConfigurationService configurationService;
 
 	@Override
 	public Collection<Ticket> findAll() {
@@ -76,14 +81,18 @@ public class TicketServiceBean implements TicketService {
 
 		if (!account.hasValidCard())
 			throw new InvalidCardException("Card is expired or invalid");
+		
+		Date currentDate = new Date();
 
 		logger.info("card is Valid. Saving ticket");
 		ticket.setAccount(account);
-		ticket.setOrdinal(1);
-		ticket.setLabel("dummy");
-		ticket.setCode("dummy");
-		ticket.setCreatedAt(new Date());
-		ticket.setEffectiveAt(new Date());
+		ticket.setOrdinal((int) Math.round(Math.random()));
+		ticket.setLabel("dummy" + Math.random());
+		ticket.setCode("dummy" + Math.random());
+		ticket.setCreatedAt(currentDate);
+		ticket.setEffectiveAt(currentDate);
+		ticket.setState(TicketState.RESERVED);
+		ticket.setExpiresAt(DateUtil.addDays(currentDate, configurationService.getExpirationDays()));
 
 		Ticket savedTicket = ticketRepository.save(ticket);
 

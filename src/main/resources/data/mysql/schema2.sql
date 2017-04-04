@@ -248,6 +248,7 @@ create table `trains`.`ticket` (
 	`departure` bigint(20) unsigned not null,
 	`to_station` bigint(20) unsigned not null,
 	`price` decimal(6,2) unsigned not null,
+	`state` varchar(50) not null,
 	primary key (`id`),
 	index `ticket_departure_idx` (`departure` asc),
 	index `ticket_to_idx` (`to_station` asc),

@@ -7,6 +7,8 @@ package org.feup.trains.model;
 
 import java.math.BigDecimal;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -53,6 +55,9 @@ public class Ticket extends ReferenceEntity {
      * Price to pay for ticket.
      */
     private BigDecimal price;
+    
+    @Enumerated(EnumType.STRING)
+    private TicketState state;
 
     public Ticket() {
 	super();
@@ -88,6 +93,14 @@ public class Ticket extends ReferenceEntity {
 
 	public void setAccount(Account account) {
 		this.account = account;
+	}
+
+	public TicketState getState() {
+		return state;
+	}
+
+	public void setState(TicketState state) {
+		this.state = state;
 	}
 
 }

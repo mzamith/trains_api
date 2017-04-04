@@ -48,7 +48,7 @@ public class TripServiceBean implements TripService {
 			trips = tripRepository.findBackwardsTrips(originStationId, destinationStationId);
 			
 			//TODO remove this hardcoded nonsense
-			departures = departureRepository.findByOrigin(6L);
+			departures = departureRepository.findByOrigin(configurationService.getLastStation());
 			
 			
 		} else {
@@ -57,7 +57,7 @@ public class TripServiceBean implements TripService {
 			trips = tripRepository.findForwardTrips(originStationId, destinationStationId);
 			
 			//TODO remove this hardcoded nonsense
-			departures = departureRepository.findByOrigin(1L);
+			departures = departureRepository.findByOrigin(configurationService.getFirstStation());
 			
 		}
 		
