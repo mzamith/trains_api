@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.feup.trains.dto.SimpleTripDTO;
+import org.feup.trains.dto.TimetableDTO;
 import org.feup.trains.dto.TravelDTO;
 import org.feup.trains.model.Departure;
 import org.feup.trains.model.Trip;
@@ -47,7 +48,6 @@ public class TripServiceBean implements TripService {
 			//Gotta find backwards trip
 			trips = tripRepository.findBackwardsTrips(originStationId, destinationStationId);
 			
-			//TODO remove this hardcoded nonsense
 			departures = departureRepository.findByOrigin(configurationService.getLastStation());
 			
 			
@@ -56,7 +56,6 @@ public class TripServiceBean implements TripService {
 			//Gotta find forward trip
 			trips = tripRepository.findForwardTrips(originStationId, destinationStationId);
 			
-			//TODO remove this hardcoded nonsense
 			departures = departureRepository.findByOrigin(configurationService.getFirstStation());
 			
 		}
@@ -100,5 +99,28 @@ public class TripServiceBean implements TripService {
 		
 		return travels;
 	}
+	
+	@Override
+	public TimetableDTO findForwardTimeline(){
+		
+		TimetableDTO timeline = new TimetableDTO();
+		
+		timeline.setDepartures(departureRepository.findByOrigin(configurationService.getFirstStation()));
+		timeline.setTrips(tripRepository.findForwardTrips(configurationService.getFirstStation(), configurationService.getLastStation()));
+		
+		return timeline;
+	}
+	
+	@Override
+	public TimetableDTO findBackwardsTimeline(){
+		
+		TimetableDTO timeline = new TimetableDTO();
+		
+		timeline.setDepartures(departureRepository.findByOrigin(configurationService.getLastStation()));
+		timeline.setTrips(tripRepository.findBackwardsTrips(configurationService.getLastStation(), configurationService.getFirstStation()));
+		
+		return timeline;
+	}
+	
 
 }
