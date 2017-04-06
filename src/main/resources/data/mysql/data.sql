@@ -65,7 +65,7 @@ insert into `trains`.`departure` (`code`, `label`, `ordinal`, `effective_at`, `e
 insert into `trains`.`departure` (`code`, `label`, `ordinal`, `effective_at`, `expires_at`, `created_at`, `from`, `time`, `line`, `train`) values ('DPT7', 'Daily departure', '7', '2015-01-01 00:00:00', NULL, NOW(), '6', '0001-01-01 15:00:00', '1', '7');
 insert into `trains`.`departure` (`code`, `label`, `ordinal`, `effective_at`, `expires_at`, `created_at`, `from`, `time`, `line`, `train`) values ('DPT8', 'Daily departure', '8', '2015-01-01 00:00:00', NULL, NOW(), '6', '0001-01-01 17:00:00', '1', '8');
 
-insert into `trains`.`ticket` (`code`, `label`, `ordinal`, `effective_at`, `expires_at`, `created_at`, `account_id`, `departure`, `to_station`, `price`, `state`) values ('TQ1', 'tickrt1', '1', '2015-01-01 00:00:00', NULL, NOW(), '3', '1', '6', 2.22, 'RESERVED');
+insert into `trains`.`ticket` (`code`, `label`, `ordinal`, `effective_at`, `expires_at`, `created_at`, `account_id`, `departure`, `from_station`, `to_station`, `price`, `state`, `day`) values ('TQ1', 'tickrt1', '1', '2015-01-01 00:00:00', NULL, NOW(), '3', '1', '2', '6', 2.22, 'RESERVED', '2017-04-07 00:00:00');
 
 
 

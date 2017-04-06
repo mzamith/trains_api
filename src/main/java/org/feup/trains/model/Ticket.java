@@ -6,6 +6,8 @@
 package org.feup.trains.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -32,6 +34,16 @@ public class Ticket extends ReferenceEntity {
 	    optional = false)
     @JoinColumn(name = "departure")
     private Departure departure;
+    
+    
+    /**
+     * The station this ticket is allowed to come from.
+     */
+    @ManyToOne(
+	    fetch = FetchType.EAGER,
+	    optional = false)
+    @JoinColumn(name = "from_station")
+    private Station from;
 
     /**
      * The station this ticket is allowed to go.
@@ -58,6 +70,9 @@ public class Ticket extends ReferenceEntity {
     
     @Enumerated(EnumType.STRING)
     private TicketState state;
+    
+    private Date day;
+    
 
     public Ticket() {
 	super();
@@ -101,6 +116,22 @@ public class Ticket extends ReferenceEntity {
 
 	public void setState(TicketState state) {
 		this.state = state;
+	}
+
+	public Station getFrom() {
+		return from;
+	}
+
+	public void setFrom(Station from) {
+		this.from = from;
+	}
+
+	public Date getDay() {
+		return day;
+	}
+
+	public void setDay(Date day) {
+		this.day = day;
 	}
 
 }

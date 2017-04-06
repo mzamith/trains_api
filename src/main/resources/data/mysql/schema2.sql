@@ -246,9 +246,11 @@ create table `trains`.`ticket` (
 	`created_at` datetime not null,
 	`account_id` bigint(20) unsigned not null,
 	`departure` bigint(20) unsigned not null,
+	`from_station` bigint(20) unsigned not null,
 	`to_station` bigint(20) unsigned not null,
 	`price` decimal(6,2) unsigned not null,
 	`state` varchar(50) not null,
+	`day` datetime not null,
 	primary key (`id`),
 	index `ticket_departure_idx` (`departure` asc),
 	index `ticket_to_idx` (`to_station` asc),
@@ -264,6 +266,11 @@ create table `trains`.`ticket` (
 		on update cascade,
 	constraint `ticket_to_fk`
 		foreign key (`to_station`)
+		references `trains`.`station` (`id`)
+		on delete restrict
+		on update cascade,
+	constraint `ticket_from_fk`
+		foreign key (`from_station`)
 		references `trains`.`station` (`id`)
 		on delete restrict
 		on update cascade,
