@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 
 import org.feup.trains.exception.InvalidCardException;
+import org.feup.trains.exception.TrainCapacityExceededException;
 import org.feup.trains.model.Station;
 import org.feup.trains.model.Ticket;
 import org.feup.trains.service.TicketService;
@@ -67,7 +68,10 @@ public class TicketController {
 			logger.error("Card is not Valid");
 			//error 412
 			return new ResponseEntity<Ticket>(HttpStatus.PRECONDITION_FAILED);
-
+		}catch (TrainCapacityExceededException tcee){
+			logger.error("Train is full");
+			//error 406
+			return new ResponseEntity<Ticket>(HttpStatus.NOT_ACCEPTABLE);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return new ResponseEntity<Ticket>(HttpStatus.BAD_REQUEST);

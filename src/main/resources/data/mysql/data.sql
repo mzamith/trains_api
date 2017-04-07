@@ -29,7 +29,7 @@ INSERT INTO account_role (account_id, role_id) SELECT a.id, r.id FROM Account a,
 
 insert into `trains`.`line` (`code`, `label`, `ordinal`, `effective_at`, `expires_at`, `created_at`) values ('A', 'Train Line A', '1', '2015-01-01 00:00:00', NULL, NOW());
 
-insert into `trains`.`train` (`code`, `label`, `ordinal`, `effective_at`, `expires_at`, `created_at`, `capacity`) values ('TR1', 'Train 1', '1', '2015-01-01 00:00:00', NULL, NOW(), '250');
+insert into `trains`.`train` (`code`, `label`, `ordinal`, `effective_at`, `expires_at`, `created_at`, `capacity`) values ('TR1', 'Train 1', '1', '2015-01-01 00:00:00', NULL, NOW(), '1');
 insert into `trains`.`train` (`code`, `label`, `ordinal`, `effective_at`, `expires_at`, `created_at`, `capacity`) values ('TR2', 'Train 2', '2', '2015-01-01 00:00:00', NULL, NOW(), '300');
 insert into `trains`.`train` (`code`, `label`, `ordinal`, `effective_at`, `expires_at`, `created_at`, `capacity`) values ('TR3', 'Train 3', '3', '2015-01-01 00:00:00', NULL, NOW(), '100');
 insert into `trains`.`train` (`code`, `label`, `ordinal`, `effective_at`, `expires_at`, `created_at`, `capacity`) values ('TR4', 'Train 4', '4', '2015-01-01 00:00:00', NULL, NOW(), '200');

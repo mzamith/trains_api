@@ -10,6 +10,7 @@ import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 
 import org.feup.trains.exception.InvalidCardException;
+import org.feup.trains.exception.TrainCapacityExceededException;
 import org.feup.trains.model.Ticket;
 
 /**
@@ -24,7 +25,7 @@ public interface TicketService {
     
     Collection<Ticket> findByAccount(HttpServletRequest request);
     
-	Ticket buyTicket(Ticket ticket, HttpServletRequest request) throws InvalidCardException;
+	Ticket buyTicket(Ticket ticket, HttpServletRequest request) throws InvalidCardException, TrainCapacityExceededException;
 
 
 }

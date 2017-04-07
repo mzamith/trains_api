@@ -5,6 +5,7 @@
  */
 package org.feup.trains.repository;
 
+import java.util.Date;
 import java.util.List;
 import org.feup.trains.model.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -50,5 +51,14 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
      */
     @Query("SELECT t FROM Ticket t WHERE t.account.username = :username")
     List<Ticket> findAllByUsername(@Param("username") String username);
-
+    
+    @Query("SELECT t FROM Ticket t WHERE t.day >= :after AND t.day < :before")
+    List<Ticket> findBetweenDates(@Param("after") Date after, @Param("before") Date before);
+    
+    @Query(value = "SELECT s.id, (SELECT count(*) FROM TICKET t where (t.day between ?1 AND ?2) AND (s.id between t.from_station and t.to_station) AND t.departure = ?3) as num_tickets from STATION s WHERE s.id >= ?4 AND s.id <= ?5 group by s.id", nativeQuery = true)
+    List<Object[]> findTicketsByStationForward(@Param("after") String after, @Param("before") String before, @Param("departure") String departureID, @Param("from") String fromId, @Param("to") String toId);
+    
+    @Query(value = "SELECT s.id, (SELECT count(*) FROM TICKET t where (t.day between ?1 AND ?2) AND (s.id between t.to_station and t.from_station) AND t.departure = ?3) as num_tickets from STATION s WHERE s.id >= ?5 AND s.id <= ?4 group by s.id", nativeQuery = true)
+    List<Object[]> findTicketsByStationBackwards(@Param("after") String after, @Param("before") String before, @Param("departure") String departureID, @Param("from") String fromId, @Param("to") String toId);
+    
 }
