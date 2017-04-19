@@ -58,21 +58,16 @@ public class TicketController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TicketDTO> buyTicket(@RequestBody Ticket ticket, HttpServletRequest request) {
+    public ResponseEntity<Ticket> buyTicket(@RequestBody Ticket ticket, HttpServletRequest request) {
         logger.info("> buyTicket");
 
         try {
             Ticket temp = ticketService.buyTicket(ticket, request);
+            temp.setCodeDTO(createCode(ticket));
 
-            Gson gson = new Gson();
-
-            TicketDTO savedTicket = new TicketDTO(temp);
-
-            byte[] code = Encrypter.encrypt(gson.toJson(new TicketInspectorDTO(temp)));
-            savedTicket.setQrcode(code);
             logger.info("< buyTicket");
 
-            return new ResponseEntity<>(savedTicket, HttpStatus.CREATED);
+            return new ResponseEntity<>(temp, HttpStatus.CREATED);
 
         } catch (InvalidCardException ice) {
             logger.error("Card is not Valid");
@@ -103,9 +98,22 @@ public class TicketController {
         logger.info("> getTickets");
 
         Collection<Ticket> tickets = ticketService.findByAccount(request);
+        tickets.stream()
+                .forEach((Ticket t) -> {
+                    t.setCodeDTO(createCode(t));
+                });
 
         logger.info("< getTickets");
         return new ResponseEntity<Collection<Ticket>>(tickets,
                 HttpStatus.OK);
+    }
+
+    private byte[] createCode(Ticket ticket) {
+        Gson gson = new Gson();
+
+        TicketInspectorDTO temp = new TicketInspectorDTO(ticket);
+        String encode = gson.toJson(temp);
+
+        return Encrypter.encrypt(encode);
     }
 }
