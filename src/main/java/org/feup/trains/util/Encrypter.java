@@ -5,22 +5,19 @@
  */
 package org.feup.trains.util;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
-import java.security.KeyFactory;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  *
@@ -28,63 +25,37 @@ import javax.crypto.NoSuchPaddingException;
  */
 public class Encrypter {
 
-    private static PublicKey PUBLIC_KEY = null;
+    private static SecretKeySpec secretKey;
 
-    private static PublicKey getPublicKey() {
-        if (PUBLIC_KEY == null) {
-            PublicKeyReader reader = new PublicKeyReader();
-            try {
-                PUBLIC_KEY = reader.get("/private.key");
-            } catch (IOException ex) {
-                Logger.getLogger(Encrypter.class.getName()).log(Level.SEVERE, null, ex);
-            }
+    private static final String SECRET_KEY = "L£(iIab£qh#TXCLE§€DpOD]=b$WgZeliLirYDXQs£NoFdOB?nlFyRkyr€mV\"UtdffV%PoKDP#VitGTQYS=%Hu/xDHoYXS§e{iK!xmsAZjQFM=\"nx#UQA(EMWPt€€d%§w";
+
+    private static void setKey() {
+        if (secretKey != null) {
+            return;
         }
-        return PUBLIC_KEY;
-    }
-
-    public static byte[] encrypt(String text) {
-        return rsa(text.getBytes(StandardCharsets.UTF_8));
-    }
-
-//    private static byte[] sha256(byte[] data) {
-//        MessageDigest digest;
-//        try {
-//            digest = MessageDigest.getInstance("SHA-256");
-//        } catch (NoSuchAlgorithmException ex) {
-//            Logger.getLogger(Encrypter.class.getName()).log(Level.SEVERE, null, ex);
-//            return null;
-//        }
-//        return digest.digest(data);
-//    }
-    private static byte[] rsa(byte[] data) {
-        final Cipher cipher;
-
+        MessageDigest sha;
+        byte[] key;
         try {
-            cipher = Cipher.getInstance("RSA");
-            cipher.init(Cipher.ENCRYPT_MODE, getPublicKey());
-            return cipher.doFinal(data);
-        } catch (IllegalBlockSizeException | BadPaddingException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException ex) {
+            key = SECRET_KEY.getBytes("UTF-8");
+            sha = MessageDigest.getInstance("SHA-256");
+            key = sha.digest(key);
+            key = Arrays.copyOf(key, 16);
+            secretKey = new SecretKeySpec(key, "AES");
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
             Logger.getLogger(Encrypter.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
     }
 
-    private static class PublicKeyReader {
-
-        public PublicKey get(String filename) throws IOException {
-
-            byte[] keyBytes = Files.readAllBytes(new File(filename).toPath());
-
-            PKCS8EncodedKeySpec spec
-                    = new PKCS8EncodedKeySpec(keyBytes);
-            try {
-                KeyFactory kf = KeyFactory.getInstance("RSA");
-                return kf.generatePublic(spec);
-            } catch (InvalidKeySpecException | NoSuchAlgorithmException ex) {
-                Logger.getLogger(Encrypter.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            return null;
+    public static String encrypt(String text) {
+        try {
+            setKey();
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+            return Base64.getEncoder().encodeToString(cipher.doFinal(text.getBytes("UTF-8")));
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException e) {
+            System.out.println("Error while encrypting: " + e.toString());
         }
+        return null;
     }
 
 }

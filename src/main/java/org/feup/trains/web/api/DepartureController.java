@@ -6,9 +6,12 @@
 package org.feup.trains.web.api;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
+import org.feup.trains.dto.DepartureDTO;
 import org.feup.trains.dto.TicketDTO;
 import org.feup.trains.dto.TicketInspectorDTO;
+import org.feup.trains.service.DepartureService;
 import org.feup.trains.service.TicketService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +40,12 @@ public class DepartureController {
     @Autowired
     private TicketService ticketService;
 
+    /**
+     * The DepartureService business service.
+     */
+    @Autowired
+    private DepartureService departureService;
+
     /* Maps to all HTTP actions by default (GET,POST,..)*/
     @RequestMapping("/test")
     public @ResponseBody
@@ -61,4 +70,16 @@ public class DepartureController {
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
+    /* Maps to all HTTP actions by default (GET,POST,..)*/
+    @RequestMapping(
+            value = "/inspector/departures/{departures}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<DepartureDTO>> getDeparture(@PathVariable List<Long> departures) {
+        logger.info("> getDeparture");
+
+        Collection<DepartureDTO> result = departureService.findAll(departures);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

@@ -63,7 +63,7 @@ public class TicketController {
 
         try {
             Ticket temp = ticketService.buyTicket(ticket, request);
-            temp.setCodeDTO(createCode(ticket));
+            temp.setCodeDTO(new String(createCode(ticket)));
 
             logger.info("< buyTicket");
 
@@ -100,7 +100,7 @@ public class TicketController {
         Collection<Ticket> tickets = ticketService.findByAccount(request);
         tickets.stream()
                 .forEach((Ticket t) -> {
-                    t.setCodeDTO(createCode(t));
+                    t.setCodeDTO(new String(createCode(t)));
                 });
 
         logger.info("< getTickets");
@@ -108,7 +108,7 @@ public class TicketController {
                 HttpStatus.OK);
     }
 
-    private byte[] createCode(Ticket ticket) {
+    private String createCode(Ticket ticket) {
         Gson gson = new Gson();
 
         TicketInspectorDTO temp = new TicketInspectorDTO(ticket);

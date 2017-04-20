@@ -73,7 +73,7 @@ public class Ticket extends ReferenceEntity {
     private Date day;
 
     @Transient
-    private byte[] codeDTO;
+    private String codeDTO;
 
     public Ticket() {
         super();
@@ -135,11 +135,11 @@ public class Ticket extends ReferenceEntity {
         this.day = day;
     }
 
-    public byte[] getCodeDTO() {
+    public String getCodeDTO() {
         return codeDTO;
     }
 
-    public void setCodeDTO(byte[] codeDTO) {
+    public void setCodeDTO(String codeDTO) {
         this.codeDTO = codeDTO;
     }
 
