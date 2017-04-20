@@ -14,10 +14,6 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityExistsException;
 import javax.servlet.http.HttpServletRequest;
-<<<<<<< HEAD
-
-=======
->>>>>>> 9c5da123a3b1a4795bfb28f22b78c21a90d73b99
 import org.feup.trains.exception.InvalidCardException;
 import org.feup.trains.exception.TrainCapacityExceededException;
 import org.feup.trains.model.Account;
