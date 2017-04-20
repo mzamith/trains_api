@@ -15,7 +15,6 @@ import java.util.List;
 
 import javax.persistence.EntityExistsException;
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.DateFormatter;
 
 import org.feup.trains.exception.InvalidCardException;
 import org.feup.trains.exception.TrainCapacityExceededException;

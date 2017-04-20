@@ -2,9 +2,7 @@
  * MySQL script.
  * Load the database with reference data and unit test data.
  */
-
-
-INSERT INTO configuration (id, conf_key, conf_value) VALUES (1, "trains-cents-per-kilometre", "1");
+INSERT INTO configuration (id, conf_key, conf_value) VALUES (1, "trains-cents-per-kilometre", "7");
 INSERT INTO configuration (id, conf_key, conf_value) VALUES (2, "trains-first-station-id", "1");
 INSERT INTO configuration (id, conf_key, conf_value) VALUES (3, "trains-last-station-id", "6");
 INSERT INTO configuration (id, conf_key, conf_value) VALUES (4, "tickets-expiration-duration-days", "10");
