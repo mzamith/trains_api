@@ -6,7 +6,9 @@
 package org.feup.trains.web.api;
 
 import java.util.Collection;
-import org.feup.trains.model.Ticket;
+import java.util.stream.Collectors;
+import org.feup.trains.dto.TicketDTO;
+import org.feup.trains.dto.TicketInspectorDTO;
 import org.feup.trains.service.TicketService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,20 +41,24 @@ public class DepartureController {
     @RequestMapping("/test")
     public @ResponseBody
     String getUsers() {
-	return "Sup? We da departures cuz!";
+        return "Sup? We da departures cuz!";
     }
 
     /* Maps to all HTTP actions by default (GET,POST,..)*/
     @RequestMapping(
-	    value = "/inspector/departures/{departure}/tickets",
-	    method = RequestMethod.GET,
-	    produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Ticket>> getDepartureTickets(@PathVariable Long departure) {
-	logger.info("> getLines");
+            value = "/inspector/departures/{departure}/tickets",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<TicketInspectorDTO>> getDepartureTickets(@PathVariable Long departure) {
+        logger.info("> getLines");
 
-	Collection<Ticket> tickets = ticketService.findAllByDeparture(departure);
+        Collection<TicketInspectorDTO> tickets = ticketService
+                .findAllByDeparture(departure)
+                .stream()
+                .map(t -> new TicketInspectorDTO(new TicketDTO(t), t.getAccount().getUsername()))
+                .collect(Collectors.toList());
 
-	return new ResponseEntity<>(tickets, HttpStatus.OK);
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
 }

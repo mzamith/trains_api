@@ -7,7 +7,6 @@ package org.feup.trains.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * The Ticket class is an entity model object. It represents a ticket, with a
@@ -30,18 +30,17 @@ public class Ticket extends ReferenceEntity {
      * The departure this ticket is supposed to be used at.
      */
     @ManyToOne(
-	    fetch = FetchType.EAGER,
-	    optional = false)
+            fetch = FetchType.EAGER,
+            optional = false)
     @JoinColumn(name = "departure")
     private Departure departure;
-    
-    
+
     /**
      * The station this ticket is allowed to come from.
      */
     @ManyToOne(
-	    fetch = FetchType.EAGER,
-	    optional = false)
+            fetch = FetchType.EAGER,
+            optional = false)
     @JoinColumn(name = "from_station")
     private Station from;
 
@@ -49,89 +48,99 @@ public class Ticket extends ReferenceEntity {
      * The station this ticket is allowed to go.
      */
     @ManyToOne(
-	    fetch = FetchType.EAGER,
-	    optional = false)
+            fetch = FetchType.EAGER,
+            optional = false)
     @JoinColumn(name = "to_station")
     private Station to;
-    
+
     /**
      * The account the ticket belongs to
      */
-	@ManyToOne(
-			fetch = FetchType.EAGER,
-			optional = false)
-	@JoinColumn(name = "account_id")
+    @ManyToOne(
+            fetch = FetchType.EAGER,
+            optional = false)
+    @JoinColumn(name = "account_id")
     private Account account;
 
     /**
      * Price to pay for ticket.
      */
     private BigDecimal price;
-    
+
     @Enumerated(EnumType.STRING)
     private TicketState state;
-    
+
     private Date day;
-    
+
+    @Transient
+    private byte[] codeDTO;
 
     public Ticket() {
-	super();
+        super();
     }
 
     public Departure getDeparture() {
-	return departure;
+        return departure;
     }
 
     public void setDeparture(Departure departure) {
-	this.departure = departure;
+        this.departure = departure;
     }
 
     public Station getTo() {
-	return to;
+        return to;
     }
 
     public void setTo(Station to) {
-	this.to = to;
+        this.to = to;
     }
 
     public BigDecimal getPrice() {
-	return price;
+        return price;
     }
 
     public void setPrice(BigDecimal price) {
-	this.price = price;
+        this.price = price;
     }
-    
-	public Account getAccount() {
-		return account;
-	}
 
-	public void setAccount(Account account) {
-		this.account = account;
-	}
+    public Account getAccount() {
+        return account;
+    }
 
-	public TicketState getState() {
-		return state;
-	}
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 
-	public void setState(TicketState state) {
-		this.state = state;
-	}
+    public TicketState getState() {
+        return state;
+    }
 
-	public Station getFrom() {
-		return from;
-	}
+    public void setState(TicketState state) {
+        this.state = state;
+    }
 
-	public void setFrom(Station from) {
-		this.from = from;
-	}
+    public Station getFrom() {
+        return from;
+    }
 
-	public Date getDay() {
-		return day;
-	}
+    public void setFrom(Station from) {
+        this.from = from;
+    }
 
-	public void setDay(Date day) {
-		this.day = day;
-	}
+    public Date getDay() {
+        return day;
+    }
+
+    public void setDay(Date day) {
+        this.day = day;
+    }
+
+    public byte[] getCodeDTO() {
+        return codeDTO;
+    }
+
+    public void setCodeDTO(byte[] codeDTO) {
+        this.codeDTO = codeDTO;
+    }
 
 }

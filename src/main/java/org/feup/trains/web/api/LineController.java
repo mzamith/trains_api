@@ -6,8 +6,9 @@
 package org.feup.trains.web.api;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 import org.feup.trains.dto.DepartureDTO;
-import org.feup.trains.model.Line;
+import org.feup.trains.dto.LineDTO;
 import org.feup.trains.service.DepartureService;
 import org.feup.trains.service.LineService;
 import org.slf4j.Logger;
@@ -49,15 +50,19 @@ public class LineController {
      * @return A ResponseEntity containing a Collection of Line objects.
      */
     @RequestMapping(
-	    value = "/api/lines",
-	    method = RequestMethod.GET,
-	    produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Line>> getLines() {
-	logger.info("> getLines");
+            value = "/api/lines",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<LineDTO>> getLines() {
+        logger.info("> getLines");
 
-	Collection<Line> lines = lineService.findAll();
+        Collection<LineDTO> lines = lineService
+                .findAll()
+                .stream()
+                .map(l -> new LineDTO(l))
+                .collect(Collectors.toList());
 
-	return new ResponseEntity<>(lines, HttpStatus.OK);
+        return new ResponseEntity<>(lines, HttpStatus.OK);
     }
 
     /**
@@ -68,15 +73,15 @@ public class LineController {
      * @return A ResponseEntity containing a Collection of Departure objects.
      */
     @RequestMapping(
-	    value = "/api/lines/{line}/departures",
-	    method = RequestMethod.GET,
-	    produces = MediaType.APPLICATION_JSON_VALUE)
+            value = "/api/lines/{line}/departures",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<DepartureDTO>> getLineDepartures(@PathVariable Long line) {
-	logger.info("> getLineDepartures");
+        logger.info("> getLineDepartures");
 
-	Collection<DepartureDTO> departures = departureService.findAllByLine(line);
+        Collection<DepartureDTO> departures = departureService.findAllByLine(line);
 
-	return new ResponseEntity<>(departures, HttpStatus.OK);
+        return new ResponseEntity<>(departures, HttpStatus.OK);
     }
 
 }
