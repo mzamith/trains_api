@@ -30,7 +30,7 @@ public class TicketDTO {
 
     private TicketState state;
 
-    private byte[] qrcode;
+    private String qrcode;
 
     public TicketDTO() {
     }
@@ -111,11 +111,11 @@ public class TicketDTO {
         this.state = state;
     }
 
-    public byte[] getQrcode() {
+    public String getQrcode() {
         return qrcode;
     }
 
-    public void setQrcode(byte[] qrcode) {
+    public void setQrcode(String qrcode) {
         this.qrcode = qrcode;
     }
 

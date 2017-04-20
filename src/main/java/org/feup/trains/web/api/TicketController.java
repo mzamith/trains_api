@@ -43,14 +43,18 @@ public class TicketController {
     public ResponseEntity<Collection<TicketDTO>> getTickets() {
         logger.info("> getTickets");
 
-        Collection<TicketDTO> tickets = ticketService
-                .findAll()
+        Collection<Ticket> tickets = ticketService.findAll();
+
+        Collection<TicketDTO> response = tickets
                 .stream()
-                .map(m -> new TicketDTO(m))
+                .map(m -> {
+                    m.setCodeDTO(createCode(m));
+                    return new TicketDTO(m);
+                })
                 .collect(Collectors.toList());
 
         logger.info("< getTickets");
-        return new ResponseEntity<>(tickets,
+        return new ResponseEntity<>(response,
                 HttpStatus.OK);
     }
 
@@ -63,7 +67,7 @@ public class TicketController {
 
         try {
             Ticket temp = ticketService.buyTicket(ticket, request);
-            temp.setCodeDTO(new String(createCode(ticket)));
+            temp.setCodeDTO(createCode(ticket));
 
             logger.info("< buyTicket");
 
@@ -88,6 +92,7 @@ public class TicketController {
      * Web service endpoint to fetch all Ticket entities for a given user. The
      * service returns the collection of Ticket entities as JSON.
      *
+     * @param request
      * @return A ResponseEntity containing a Collection of Ticket objects.
      */
     @RequestMapping(
@@ -100,11 +105,11 @@ public class TicketController {
         Collection<Ticket> tickets = ticketService.findByAccount(request);
         tickets.stream()
                 .forEach((Ticket t) -> {
-                    t.setCodeDTO(new String(createCode(t)));
+                    t.setCodeDTO(createCode(t));
                 });
 
         logger.info("< getTickets");
-        return new ResponseEntity<Collection<Ticket>>(tickets,
+        return new ResponseEntity<>(tickets,
                 HttpStatus.OK);
     }
 
