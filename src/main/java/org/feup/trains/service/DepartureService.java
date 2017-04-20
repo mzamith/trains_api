@@ -6,6 +6,7 @@
 package org.feup.trains.service;
 
 import java.util.Collection;
+import java.util.List;
 import org.feup.trains.dto.DepartureDTO;
 
 /**
@@ -17,5 +18,7 @@ public interface DepartureService {
     public Collection<DepartureDTO> findAll();
 
     public Collection<DepartureDTO> findAllByLine(Long line);
+
+    public Collection<DepartureDTO> findAll(List<Long> departure);
 
 }
