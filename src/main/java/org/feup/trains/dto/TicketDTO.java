@@ -30,7 +30,7 @@ public class TicketDTO {
 
     private TicketState state;
 
-    private String qrcode;
+    private String codeDTO;
 
     public TicketDTO() {
     }
@@ -42,10 +42,11 @@ public class TicketDTO {
                 new StationDTO(ticket.getTo()),
                 ticket.getDay(),
                 ticket.getPrice(),
-                ticket.getState());
+                ticket.getState(),
+                ticket.getCodeDTO());
     }
 
-    public TicketDTO(Long id, DepartureDTO departure, StationDTO from, StationDTO to, Date day, BigDecimal price, TicketState state) {
+    public TicketDTO(Long id, DepartureDTO departure, StationDTO from, StationDTO to, Date day, BigDecimal price, TicketState state, String qrcode) {
         this.id = id;
         this.departure = departure;
         this.from = from;
@@ -53,6 +54,7 @@ public class TicketDTO {
         this.day = day;
         this.price = price;
         this.state = state;
+        this.codeDTO = qrcode;
     }
 
     public Long getId() {
@@ -111,12 +113,12 @@ public class TicketDTO {
         this.state = state;
     }
 
-    public String getQrcode() {
-        return qrcode;
+    public String getCodeDTO() {
+        return codeDTO;
     }
 
-    public void setQrcode(String qrcode) {
-        this.qrcode = qrcode;
+    public void setCodeDTO(String codeDTO) {
+        this.codeDTO = codeDTO;
     }
 
 }

@@ -17,26 +17,30 @@ public class TicketInspectorDTO {
 
     private Long departure;
 
+    private String departureLabel;
+
     private String username;
 
     public TicketInspectorDTO() {
     }
 
-    public TicketInspectorDTO(Long ticket, Long departure, String username) {
+    public TicketInspectorDTO(Long ticket, Long departure, String departureLabel, String username) {
         this.ticket = ticket;
         this.departure = departure;
+        this.departureLabel = departureLabel;
         this.username = username;
     }
 
     public TicketInspectorDTO(Ticket ticket) {
         this(ticket.getId(),
                 ticket.getDeparture().getId(),
+                ticket.getDeparture().getCode(),
                 ticket.getAccount().getUsername());
     }
 
     public TicketInspectorDTO(TicketDTO ticket, String username) {
         this(ticket.getId(),
-                ticket.getDeparture().getId(),
+                ticket.getDeparture().getId(), ticket.getDeparture().getCode(),
                 username);
     }
 
@@ -54,6 +58,14 @@ public class TicketInspectorDTO {
 
     public void setDeparture(Long departure) {
         this.departure = departure;
+    }
+
+    public String getDepartureLabel() {
+        return departureLabel;
+    }
+
+    public void setDepartureLabel(String departureLabel) {
+        this.departureLabel = departureLabel;
     }
 
     public String getUsername() {
